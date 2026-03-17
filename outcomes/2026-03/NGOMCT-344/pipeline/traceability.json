@@ -1,0 +1,16 @@
+{
+  "feature_id": "NGOMCT-344",
+  "source": "Jira NGOMCT-344 + DevInt2 Training__c + NGOMCT-91",
+  "decisions": [
+    {"decision": "Use Screen Flow for manual training creation", "rationale": "Declarative first; no Apex for simple create"},
+    {"decision": "Default RecordType = Live_Training", "rationale": "Most common for CSM-initiated consumer training"},
+    {"decision": "Training_Stage__c = Pending Assignment", "rationale": "Puts record in queue for NGOMCT-89"}
+  ],
+  "ac_mapping": {
+    "AC1": "Jira: manually initiate the training process for a given consumer",
+    "AC2": "Training__c Account__c MasterDetail; RecordType; Training_Stage__c",
+    "AC3": "NGOMCT-89 out of scope; optional Type, Method, Product",
+    "AC4": "Training_Stage__c lifecycle",
+    "AC5": "Entry from Account record"
+  }
+}

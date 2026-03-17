@@ -1,0 +1,109 @@
+name: Outcome Review Feedback
+description: Submit structured feedback on a published agentic workflow outcome
+title: "[Feedback] {JIRA-KEY} — {brief description}"
+labels: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to provide feedback on a specific artifact from a published agentic pipeline outcome.
+        One issue per gap or observation. For detailed analysis, also fill out `templates/gap-analysis.md`.
+
+  - type: input
+    id: feature-id
+    attributes:
+      label: Feature ID
+      description: The Jira key for the feature this feedback is about
+      placeholder: "e.g. NGOMCT-344"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: artifact
+    attributes:
+      label: Artifact
+      description: Which artifact does this feedback apply to?
+      options:
+        - "00-intake.md (INTAKE)"
+        - "01-plan.md (PLAN)"
+        - "02-architecture.md (ARCH)"
+        - "03-tdd.md (BUILD)"
+        - "04-code-review.md (REVIEW)"
+        - "05-build-fix.md (STABILIZE)"
+        - "06-e2e.md (VALIDATE)"
+        - "07-security.md (SECURE)"
+        - "08-refactor.md (CLEAN)"
+        - "09-docs.md (DOC)"
+        - "outcome-metadata.md"
+        - "status.json"
+        - "traceability.json"
+        - "Solution Architecture document"
+        - "Overall / Multiple artifacts"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What type of feedback is this?
+      options:
+        - "Prompt Error — agent's output was wrong due to a flawed instruction"
+        - "Logic Gap — reasoning was flawed, not just the prompt"
+        - "Data Missing — required data source was unavailable"
+        - "Scope Drift — agent went out of scope or missed scope boundaries"
+        - "Security Concern — output has a security implication"
+        - "Success — positive example worth preserving"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How significant is this gap?
+      options:
+        - "Critical — blocks use of the output; must be addressed immediately"
+        - "High — significant gap; address in next pipeline iteration"
+        - "Medium — notable but tolerable; address when possible"
+        - "Low — minor issue; cosmetic or stylistic"
+        - "Informational — observation only; no action required"
+        - "N/A — this is a Success observation"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Describe the gap or observation clearly. Include:
+        - What the agent produced (quote or paraphrase the relevant section)
+        - What it should have produced, or what is wrong with what it produced
+        - What impact this has if not corrected
+      placeholder: "e.g. In 01-plan.md, Acceptance Criteria AC-4 ('agent must handle inactive consumer accounts') was not included in the derived AC list. This means the Apex class does not handle inactive accounts, which would cause a runtime exception in production."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-fix
+    attributes:
+      label: Suggested Fix (optional)
+      description: |
+        If you have a hypothesis about what caused this gap and how to fix it, describe it here.
+        This is optional but very useful for the Workflow Designer.
+      placeholder: "e.g. Add instruction to the PLAN agent: 'If Jira description mentions inactive/archived states, include an explicit AC for handling inactive records.'"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: outcome-path
+    attributes:
+      label: Outcome Path
+      description: Which published outcome does this feedback apply to?
+      options:
+        - "outcomes/2026-03/NGOMCT-344"
+        - "Other (specify in description)"
+    validations:
+      required: false

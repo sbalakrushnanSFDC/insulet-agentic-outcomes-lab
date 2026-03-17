@@ -1,0 +1,21 @@
+{
+  "feature_id": "NGOMCT-344",
+  "feature_summary": "Training Creation & Assignment - Manual Training Record Creation",
+  "pipeline_version": "1.0",
+  "current_step": "COMPLETE",
+  "steps": {
+    "INTAKE": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "00-intake.md" },
+    "PLAN": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "01-plan.md" },
+    "ARCH": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "02-architecture.md" },
+    "BUILD": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "03-tdd.md" },
+    "BUILD": { "status": "pending", "completed_at": null, "artifact": "03-tdd.md" },
+    "REVIEW": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "04-code-review.md" },
+    "STABILIZE": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "05-build-fix.md" },
+    "VALIDATE": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "06-e2e.md" },
+    "SECURE": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "07-security.md" },
+    "CLEAN": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "08-refactor.md" },
+    "DOC": { "status": "pass", "completed_at": "2026-03-14T00:00:00Z", "artifact": "09-docs.md" }
+  },
+  "rework_triggered": false,
+  "last_updated": "2026-03-14T00:00:00Z"
+}
