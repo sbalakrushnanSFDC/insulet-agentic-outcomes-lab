@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product__c</fullName>
+    <description>Specifies the product that an individual will be trained on.</description>
+    <label>Product</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Omnipod 5</fullName>
+                <default>false</default>
+                <label>Omnipod 5</label>
+            </value>
+            <value>
+                <fullName>DASH</fullName>
+                <default>false</default>
+                <label>DASH</label>
+            </value>
+            <value>
+                <fullName>UST400</fullName>
+                <default>false</default>
+                <label>UST400</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

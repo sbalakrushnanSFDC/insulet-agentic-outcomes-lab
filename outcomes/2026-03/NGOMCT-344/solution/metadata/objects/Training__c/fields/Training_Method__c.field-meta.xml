@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Training_Method__c</fullName>
+    <description>Captures the mode of delivery for the training session.</description>
+    <label>Training Method</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Live Virtual</fullName>
+                <default>false</default>
+                <label>Live Virtual</label>
+            </value>
+            <value>
+                <fullName>Live In-Person</fullName>
+                <default>false</default>
+                <label>Live In-Person</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Live_Training</fullName>
+    <active>true</active>
+    <description>This is used for both Live In-person and Live Virtual Trainings</description>
+    <label>Live Training</label>
+    <picklistValues>
+        <picklist>Current_Therapy__c</picklist>
+        <values>
+            <fullName>Multiple Daily Injections</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pump Therapy</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Decline_Reason__c</picklist>
+        <values>
+            <fullName>Compatibility%2Fsupply issue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insurance%2Fcost concern</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PTOF not obtained%2FPCP refusal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient deceased</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient decided on different therapy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient health status change</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient no-show</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient non-responsive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient refused</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Self Started</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Educator_Type__c</picklist>
+        <values>
+            <fullName>CC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CPT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ST</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Insulin_Amount_Method__c</picklist>
+        <values>
+            <fullName>I count my carbohydrates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I do not know</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I have set amounts</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I use a sliding scale</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Use ratios</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Last_A1c_Result__c</picklist>
+        <values>
+            <fullName>Between 7%25 - 9%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Greater than 9%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I do not know</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Less than 7%25</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Not_Trained_Reason__c</picklist>
+        <values>
+            <fullName>Compatibility%2Fsupply issue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insurance%2Fcost concern</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PTOF not obtained%2FPCP refusal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient deceased</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient decided on different therapy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient health status change</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient no-show</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient non-responsive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patient refused</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Self Started</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>On_Hold_Reason__c</picklist>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for HCP%2FPhysician</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for PTOF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for insurance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for patient</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting for supplies</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Open_to_Group_Training__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Operating_System__c</picklist>
+        <values>
+            <fullName>Omnipod 5 App for Android</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omnipod 5 App for iPhone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omnipod 5 Controller</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PTOF_Status__c</picklist>
+        <values>
+            <fullName>Error</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manually Sent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Sent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Received</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sent</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Product__c</picklist>
+        <values>
+            <fullName>DASH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omnipod 5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UST400</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Pump_Interaction_Frequency__c</picklist>
+        <values>
+            <fullName>I am constantly checking and making treatment decisions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not often</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Only when I must</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usually only at meal times</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Sensor_CGM_Continuous_Glucose_Monitor__c</picklist>
+        <values>
+            <fullName>Dexcom G6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dexcom G7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Freestyle Libre 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Freestyle Libre 2 Plus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Freestyle Libre 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic Guardian</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Currently Using a Sensor%2FCGM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other CGM</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Severe_glucose_events_in_last_6_months__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Training_Communication_Preference__c</picklist>
+        <values>
+            <fullName>Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Text</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Training_Language__c</picklist>
+        <values>
+            <fullName>English</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Spanish</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Training_Method__c</picklist>
+        <values>
+            <fullName>Live In-Person</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Live Virtual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Training_Stage__c</picklist>
+        <values>
+            <fullName>Accepted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Declined</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Not Trained</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>On Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Acceptance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Assignment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scheduled</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Training_Time_Zone__c</picklist>
+        <values>
+            <fullName>Alaska Time Zone %28AKT%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atlantic Time Zone %28AT%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Central Time Zone %28CT%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Eastern Time Zone %28ET%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hawaii Standard Time Zone %28HST%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mountain Time Zone %28MT%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pacific Time Zone %28PT%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Training_Type__c</picklist>
+        <values>
+            <fullName>Follow-Up Training</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Insulin Start Training</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pre-Pod %2B Insulin Start Training</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pre-Pod Training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type_of_Diabetes__c</picklist>
+        <values>
+            <fullName>Other%2FUnsure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Type 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Type 2%3A Using Insulin</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type_of_Pump__c</picklist>
+        <values>
+            <fullName>Animas IR 1200%2F1250</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BetaBionics iLet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dash</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Del Animas R%2FIR 1000</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Deltec Cozmo%2FCozmore</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disetronic D-TRON%2FD-TRONplus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disetronic H-TRON%2FH-TRONplus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Eros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed 507%2F507c</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed 508</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed Paradigm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed Paradigm 511</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed Paradigm 512</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed Paradigm 515</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed Paradigm 712</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed Paradigm 715</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed%E2%84%A2 630G</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed%E2%84%A2 670G</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed%E2%84%A2 770G</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medtronic MiniMed%E2%84%A2 780G</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omnipod DASH%C2%AE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omnipod%C2%AE System</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tandem Mobi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tandem t-slim X2 with Basal IQ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tandem t-slim X2 with Control IQ</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

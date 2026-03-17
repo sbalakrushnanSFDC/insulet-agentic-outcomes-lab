@@ -1,5 +1,8 @@
 # Outcome Metadata — NGOMCT-344
 
+**Author:** Som Balakrushnan  
+© Som Balakrushnan
+
 > Reference implementation for the Insulet Agentic Outcomes Lab.
 > This is the first published outcome and serves as the canonical example for all templates and guides.
 
@@ -79,10 +82,12 @@
 
 | Gap | Category | Severity | Notes |
 |-----|----------|----------|-------|
+| **Feature is partially implemented** — Apex Invocable built but Screen Flow (`Manual_Training_Creation`), Lightning Action (`Create_Training` on Account), and FlexiPage update were **not built** | Scope Drift | **Critical** | The feature cannot be triggered by an end user. Only the service contract layer exists. See `solution/metadata/flows/Manual_Training_Creation.flow-spec.md` for the deferred specification. Follow-up pipeline run required. |
 | Confluence CON-13 body not retrieved — the agent used `mcp_web_fetch` (unauthenticated HTTP) instead of `atlassian-guardrails` `confluence_get_page` | Data Missing | Medium | All ACs were derived without access to the definitive business process documentation. A re-run using the correct MCP tool would validate or correct the derived ACs. |
 | Duplicate `BUILD` key in `status.json` | Logic Gap | Low | JSON object with duplicate key; only one value is retained by most parsers. The pipeline state write had a logic error. |
 | E2E validation was a paper exercise — `sf org display` on orgsyncng returned exit code 1 | Data Missing | High | The E2E artifact describes test scenarios but does not confirm actual deployment and execution against the live sandbox. Consider this step `partial` rather than `pass`. |
-| `Training_Stage__c` default value (`Pending Assignment`) was inferred, not confirmed | Logic Gap | Medium | The stage value drives the downstream NGOMCT-89 workflow. If the value is wrong, the training record will not enter the correct queue. Requires confirmation against CON-13 or the DevInt2 picklist values. |
+| `Training_Stage__c` default value (`Pending Assignment`) inferred, not confirmed | Logic Gap | Medium | The stage value drives the downstream NGOMCT-89 workflow. If the value is wrong, the training record will not enter the correct queue. Requires confirmation against CON-13 or the DevInt2 picklist values. |
+| `Training_After_Save` pre-existing Flow behavior on new record not verified | Logic Gap | Medium | Pre-existing record-triggered Flow fires on `Training__c` save. Whether it conflicts with a new record at `Pending Assignment` stage was not verified in the org. |
 | Blockers NGOMCT-6, NGOMCT-240, NGASIM-263 were in Backlog at run time | Data Missing | Low | The agent acknowledged these dependencies but did not assess their impact on the implementation. If these stories define object structures or business rules that affect `Training__c`, the implementation may need revision. |
 
 ---
@@ -96,6 +101,29 @@
 | Default `Training_Stage__c = 'Pending Assignment'` | Places record in queue for NGOMCT-89 downstream | AC-4 |
 | `Training_Stage__c` lifecycle and `NGOMCT-89` out of scope | Explicit Jira description boundary | AC-3 |
 | Entry from Account record (Screen Flow or Quick Action) | Standard Salesforce UX for related record creation | AC-5 |
+
+---
+
+## Salesforce Constructs
+
+Full details and file classification in `solution/metadata/README.md`.
+
+| Construct | Type | Tag | Notes |
+|-----------|------|-----|-------|
+| `TrainingManualCreationService.cls` | Apex Class | **[NEW]** | Invocable service; core deliverable of this pipeline run |
+| `TrainingManualCreationServiceTest.cls` | Apex Test Class | **[NEW]** | 5 TDD test methods; covers AC-1 through AC-3, bulk, and error cases |
+| `TrainingManualCreationService.cls-meta.xml` | Apex Metadata | **[NEW]** | API version |
+| `TrainingManualCreationServiceTest.cls-meta.xml` | Apex Metadata | **[NEW]** | API version |
+| `Training__c` object | Custom Object | **[RETRIEVED]** | Pre-existing in DevInt2; context for reviewers |
+| `Training__c.Account__c` | Field | **[RETRIEVED]** | MasterDetail — required by Apex implementation |
+| `Training__c.Training_Stage__c` | Field | **[RETRIEVED]** | Picklist — `Pending Assignment` default confirmed from this field definition |
+| `Training__c.Training_Type__c` | Field | **[RETRIEVED]** | Optional input to Invocable |
+| `Training__c.Training_Method__c` | Field | **[RETRIEVED]** | Optional input to Invocable |
+| `Training__c.Product__c` | Field | **[RETRIEVED]** | Optional input to Invocable |
+| `Live_Training` RecordType | Record Type | **[RETRIEVED]** | Default RecordType; queried in Apex by `DeveloperName` |
+| `Manual_Training_Creation` Screen Flow | Flow | **[PLANNED — NOT BUILT]** | Deferred; spec in `solution/metadata/flows/`; required for AC-5 and end-to-end deployment |
+| `Create_Training` Lightning Action on Account | Object Action | **[PLANNED — NOT BUILT]** | Deferred; required for AC-5 |
+| Account Record Page FlexiPage update | FlexiPage | **[PLANNED — NOT BUILT]** | Deferred; required for AC-5 |
 
 ---
 
