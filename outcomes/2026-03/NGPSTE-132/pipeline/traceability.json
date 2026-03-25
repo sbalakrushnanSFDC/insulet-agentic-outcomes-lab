@@ -1,0 +1,319 @@
+{
+  "featureId": "NGPSTE-132",
+  "runId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "pipelineVersion": "generator-critic-v1",
+  "generatedAt": "2026-03-25T06:05:00.000Z",
+  "contextSources": {
+    "jira": {
+      "featureIssue": "NGPSTE-132",
+      "childStories": [
+        "NGPSTE-161",
+        "NGPSTE-644",
+        "NGPSTE-833",
+        "NGPSTE-840",
+        "NGPSTE-905",
+        "NGPSTE-1123"
+      ],
+      "linkedIssues": [
+        "NGPSTE-888",
+        "NGCCB-20",
+        "NGASIM-76"
+      ],
+      "tool": "atlassian-guardrails.jira_get_issue / jira_search"
+    },
+    "devint2": {
+      "queries": [
+        {
+          "soql": "SELECT Id, Name, InternalName FROM CallCenter LIMIT 5",
+          "records": 5
+        },
+        {
+          "soql": "SELECT Id, Name, Label, IsCustom FROM PermissionSet WHERE (...CTI...) AND IsCustom = true",
+          "records": 10
+        },
+        {
+          "soql": "SELECT Id, DeveloperName, MasterLabel, RelatedEntity FROM ServiceChannel LIMIT 10",
+          "records": 2
+        },
+        {
+          "soql": "SELECT Id, DeveloperName, MasterLabel FROM ServicePresenceStatus LIMIT 10",
+          "records": 0
+        }
+      ],
+      "tool": "user-Salesforce_DX.run_soql_query"
+    },
+    "cortexMcp": {
+      "available": false,
+      "fallback": "Direct MCP calls used instead"
+    }
+  },
+  "artifactChain": [
+    {
+      "step": "00-intake",
+      "inputs": [
+        "NGPSTE-132 Jira data",
+        "6 child stories",
+        "DevInt2 CallCenter query"
+      ],
+      "outputs": [
+        "00-intake.md"
+      ],
+      "agent": "orchestrator",
+      "skillsApplied": [
+        "intake-extraction"
+      ],
+      "toolsUsed": [
+        "atlassian-guardrails.jira_get_issue",
+        "atlassian-guardrails.jira_search"
+      ],
+      "rulesApplied": [
+        "salesforce/safety"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "01-plan",
+      "inputs": [
+        "00-intake.md",
+        "DevInt2 PermissionSet query",
+        "DevInt2 ServiceChannel query"
+      ],
+      "outputs": [
+        "01-plan.md"
+      ],
+      "agent": "planner",
+      "skillsApplied": [
+        "plan-formalization",
+        "ac-derivation"
+      ],
+      "toolsUsed": [
+        "user-Salesforce_DX.run_soql_query"
+      ],
+      "rulesApplied": [
+        "salesforce/safety",
+        "common-agents"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "02-architecture",
+      "inputs": [
+        "01-plan.md",
+        "DevInt2 CallCenter, ServiceChannel, PermissionSet data"
+      ],
+      "outputs": [
+        "02-architecture.md"
+      ],
+      "agent": "architect",
+      "skillsApplied": [
+        "architecture-design",
+        "adr-authoring",
+        "cti-patterns"
+      ],
+      "toolsUsed": [
+        "user-Salesforce_DX.run_soql_query",
+        "user-Salesforce_DX.retrieve_metadata"
+      ],
+      "rulesApplied": [
+        "salesforce/safety",
+        "salesforce/apex-standards"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "03-tdd",
+      "inputs": [
+        "01-plan.md",
+        "02-architecture.md"
+      ],
+      "outputs": [
+        "03-tdd.md"
+      ],
+      "agent": "tdd-guide",
+      "skillsApplied": [
+        "test-design",
+        "red-green-refactor"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "salesforce/apex-standards"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "04-code-review",
+      "inputs": [
+        "00-intake.md",
+        "01-plan.md",
+        "02-architecture.md",
+        "03-tdd.md"
+      ],
+      "outputs": [
+        "04-review.md"
+      ],
+      "agent": "code-reviewer",
+      "skillsApplied": [
+        "review-classification",
+        "cross-artifact-consistency"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "common-agents"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "05-build-fix",
+      "inputs": [
+        "02-architecture.md",
+        "04-review.md"
+      ],
+      "outputs": [
+        "05-buildfix.md"
+      ],
+      "agent": "build-error-resolver",
+      "skillsApplied": [
+        "metadata-generation",
+        "finding-resolution"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "salesforce/safety"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "06-e2e",
+      "inputs": [
+        "03-tdd.md",
+        "05-buildfix.md"
+      ],
+      "outputs": [
+        "06-e2e.md"
+      ],
+      "agent": "e2e-runner",
+      "skillsApplied": [
+        "test-execution-planning"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "salesforce/safety"
+      ],
+      "confidence": "METADATA_UNAVAILABLE",
+      "note": "Tests NOT RUN -- deployment pending"
+    },
+    {
+      "step": "07-security",
+      "inputs": [
+        "01-plan.md",
+        "02-architecture.md"
+      ],
+      "outputs": [
+        "07-security.md"
+      ],
+      "agent": "security-reviewer",
+      "skillsApplied": [
+        "security-assessment",
+        "crud-fls-verification",
+        "owasp-checklist",
+        "cti-security"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "salesforce/safety",
+        "salesforce/apex-standards",
+        "common-security"
+      ],
+      "confidence": "PARTIALLY_GROUNDED",
+      "note": "S3 encryption and Named Credential status unverified"
+    },
+    {
+      "step": "08-refactor",
+      "inputs": [
+        "05-buildfix.md",
+        "02-architecture.md"
+      ],
+      "outputs": [
+        "08-refactor.md"
+      ],
+      "agent": "refactor-cleaner",
+      "skillsApplied": [
+        "naming-audit",
+        "config-debt-detection"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "salesforce/apex-standards"
+      ],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "09-docs",
+      "inputs": [
+        "all prior artifacts"
+      ],
+      "outputs": [
+        "09-docs.md"
+      ],
+      "agent": "doc-updater",
+      "skillsApplied": [
+        "runbook-generation",
+        "traceability-mapping"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": [
+        "salesforce/safety"
+      ],
+      "confidence": "GROUNDED"
+    }
+  ],
+  "criticEvaluation": {
+    "stagesEvaluated": 10,
+    "fullTierStages": [
+      "02-arch-critique",
+      "07-security-critique"
+    ],
+    "standardTierStages": [
+      "01-plan-critique",
+      "03-tdd-critique",
+      "04-review-critique",
+      "05-build-fix-critique",
+      "06-e2e-critique"
+    ],
+    "lightweightStages": [
+      "00-intake",
+      "08-refactor",
+      "09-docs"
+    ],
+    "reRetrievalTriggered": true,
+    "reRetrievalQueries": [
+      "Check SCV license status",
+      "Check Named Credential for Amazon Connect"
+    ],
+    "totalFindings": 8,
+    "findingsBySeverity": {
+      "CRITICAL": 0,
+      "HIGH": 1,
+      "MEDIUM": 4,
+      "LOW": 3
+    }
+  },
+  "securityFindings": {
+    "total": 6,
+    "bySeverity": {
+      "HIGH": 2,
+      "MEDIUM": 3,
+      "LOW": 1
+    },
+    "crudFlsMatrixComplete": true,
+    "owaspChecklistComplete": true
+  },
+  "reviewFindings": {
+    "total": 7,
+    "bySeverity": {
+      "HIGH": 2,
+      "MEDIUM": 4,
+      "LOW": 1
+    }
+  }
+}

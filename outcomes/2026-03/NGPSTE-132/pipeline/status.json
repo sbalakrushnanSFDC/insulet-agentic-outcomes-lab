@@ -1,0 +1,88 @@
+{
+  "featureId": "NGPSTE-132",
+  "runId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "runVersion": 1,
+  "overallStatus": "pass",
+  "pipelineMode": "generator-critic",
+  "startedAt": "2026-03-25T05:52:00.000Z",
+  "completedAt": "2026-03-25T06:05:00.000Z",
+  "steps": {
+    "00-intake": {
+      "status": "pass",
+      "agent": "orchestrator",
+      "artifact": "00-intake.md"
+    },
+    "01-plan": {
+      "status": "pass",
+      "agent": "planner",
+      "artifact": "01-plan.md"
+    },
+    "02-architecture": {
+      "status": "pass",
+      "agent": "architect",
+      "artifact": "02-architecture.md"
+    },
+    "03-tdd": {
+      "status": "pass",
+      "agent": "tdd-guide",
+      "artifact": "03-tdd.md"
+    },
+    "04-code-review": {
+      "status": "pass",
+      "agent": "code-reviewer",
+      "artifact": "04-review.md"
+    },
+    "05-build-fix": {
+      "status": "pass",
+      "agent": "build-error-resolver",
+      "artifact": "05-buildfix.md"
+    },
+    "06-e2e": {
+      "status": "pass_with_caveats",
+      "agent": "e2e-runner",
+      "artifact": "06-e2e.md",
+      "caveat": "All tests NOT RUN -- deployment pending"
+    },
+    "07-security": {
+      "status": "pass_with_caveats",
+      "agent": "security-reviewer",
+      "artifact": "07-security.md",
+      "caveat": "2 HIGH security findings pending resolution"
+    },
+    "08-refactor": {
+      "status": "pass",
+      "agent": "refactor-cleaner",
+      "artifact": "08-refactor.md"
+    },
+    "09-docs": {
+      "status": "pass",
+      "agent": "doc-updater",
+      "artifact": "09-docs.md"
+    }
+  },
+  "criticVerdict": {
+    "overallVerdict": "ACCEPT_WITH_CAVEATS",
+    "overallScore": 0.84,
+    "iterationCount": 1,
+    "converged": true,
+    "stepsRequiringAttention": [
+      "06-e2e",
+      "07-security",
+      "02-architecture"
+    ]
+  },
+  "caveats": [
+    "All E2E tests NOT RUN -- deployment to orgsyncng pending",
+    "S3 encryption audit required before production deployment",
+    "Named Credential for Amazon Connect API not yet in metadata inventory",
+    "SCV licensing status in org unverified"
+  ],
+  "generatorStages": 10,
+  "criticStages": 7,
+  "lightweightStages": 3,
+  "artifactCount": 10,
+  "criticFindingsCount": 8,
+  "highSeverityCount": 1,
+  "mediumSeverityCount": 4,
+  "lowSeverityCount": 3
+}
