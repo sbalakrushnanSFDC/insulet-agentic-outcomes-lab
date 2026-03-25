@@ -1,0 +1,30 @@
+{
+  "featureId": "NGASIM-556",
+  "featureTitle": "Access to Sales App from mobile for Field Sales",
+  "runId": "NGASIM-556-run-001",
+  "startedAt": "2026-03-25T04:15:00Z",
+  "completedAt": "2026-03-25T04:45:00Z",
+  "pipeline": {
+    "00-INTAKE": { "status": "pass", "agent": "orchestrator", "artifact": "00-intake.md" },
+    "01-PLAN": { "status": "pass", "agent": "planner", "artifact": "01-plan.md" },
+    "02-ARCHITECTURE": { "status": "pass", "agent": "architect", "artifact": "02-architecture.md" },
+    "03-TDD": { "status": "pass", "agent": "tdd-guide", "artifact": "03-tdd.md" },
+    "04-REVIEW": { "status": "pass", "agent": "code-reviewer", "artifact": "04-review.md" },
+    "05-BUILD-FIX": { "status": "pass", "agent": "build-error-resolver", "artifact": "05-buildfix.md" },
+    "06-E2E": { "status": "pass", "agent": "e2e-runner", "artifact": "06-e2e.md", "note": "Tests NOT RUN -- deployment pending" },
+    "07-SECURITY": { "status": "pass", "agent": "security-reviewer", "artifact": "07-security.md" },
+    "08-REFACTOR": { "status": "pass", "agent": "refactor-cleaner", "artifact": "08-refactor.md" },
+    "09-DOCS": { "status": "pass", "agent": "doc-updater", "artifact": "09-docs.md" }
+  },
+  "overallStatus": "pass",
+  "caveats": [
+    "E2E tests are defined but NOT executed -- deployment to orgsyncng sandbox required first",
+    "Security finding SEC-001 (Health Cloud data exposure) needs human audit before production",
+    "Device security policy (SEC-002) flagged for IT Security review"
+  ],
+  "contextSources": {
+    "jira": { "key": "NGASIM-556", "fetched": true, "includeRaw": true },
+    "cortex": { "contextPack": true, "relevantFiles": 25, "highRelevance": 0 },
+    "devint2": { "soqlQueries": 4, "readOnly": true, "profilesFound": ["Sales"], "permSetsFound": ["Field_Sales_Core_Access", "Field_Sales_Edit", "Field_Sales_GM_RBD", "Field_Sales_TM_DSM", "SalesCloudMobileUser"], "appsFound": ["SalesCloudMobile", "Insulet_Sales", "Inside_Sales", "Sales_Leader"] }
+  }
+}

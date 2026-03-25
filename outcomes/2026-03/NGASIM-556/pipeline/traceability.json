@@ -1,0 +1,41 @@
+{
+  "featureId": "NGASIM-556",
+  "runId": "NGASIM-556-run-001",
+  "jiraUrl": "https://insulet.atlassian.net/browse/NGASIM-556",
+  "parentFeature": {
+    "key": "NGASIM-38",
+    "summary": "Mobile compatibility for TM/CSM",
+    "url": "https://insulet.atlassian.net/browse/NGASIM-38"
+  },
+  "artifactChain": [
+    { "step": "00-INTAKE", "file": "00-intake.md", "inputs": ["NGASIM-556 (Jira)", "Cortex context pack"], "outputs": ["requirements", "risks", "dependency-map"] },
+    { "step": "01-PLAN", "file": "01-plan.md", "inputs": ["00-intake.md", "DevInt2 SOQL (profiles, perm sets, apps)"], "outputs": ["acceptance-criteria", "implementation-phases", "risk-register"] },
+    { "step": "02-ARCHITECTURE", "file": "02-architecture.md", "inputs": ["01-plan.md", "DevInt2 SOQL (CustomApplication)"], "outputs": ["ADRs", "component-design", "metadata-inventory", "compact-layouts"] },
+    { "step": "03-TDD", "file": "03-tdd.md", "inputs": ["02-architecture.md", "01-plan.md AC table"], "outputs": ["test-specifications", "SOQL-validation-queries", "coverage-estimate"] },
+    { "step": "04-REVIEW", "file": "04-review.md", "inputs": ["02-architecture.md", "03-tdd.md", "01-plan.md"], "outputs": ["findings", "recommendations"] },
+    { "step": "05-BUILD-FIX", "file": "05-buildfix.md", "inputs": ["02-architecture.md", "04-review.md findings"], "outputs": ["metadata-XML", "validation-checklist"] },
+    { "step": "06-E2E", "file": "06-e2e.md", "inputs": ["03-tdd.md", "05-buildfix.md"], "outputs": ["test-execution-matrix", "SOQL-checks"] },
+    { "step": "07-SECURITY", "file": "07-security.md", "inputs": ["02-architecture.md", "01-plan.md"], "outputs": ["security-findings", "CRUD-FLS-matrix", "OWASP-checklist"] },
+    { "step": "08-REFACTOR", "file": "08-refactor.md", "inputs": ["05-buildfix.md", "02-architecture.md"], "outputs": ["naming-improvements", "config-debt-log"] },
+    { "step": "09-DOCS", "file": "09-docs.md", "inputs": ["all prior artifacts"], "outputs": ["deployment-runbook", "permission-model-reference", "traceability-links", "jira-summary"] }
+  ],
+  "devint2Queries": [
+    { "purpose": "Find Sales-related profiles", "query": "SELECT Id, Name FROM Profile WHERE Name LIKE '%Sales%'", "results": 5 },
+    { "purpose": "Find Field Sales and Mobile permission sets", "query": "SELECT Id, Name, Label FROM PermissionSet WHERE Name LIKE '%Field%Sales%' OR Name LIKE '%Mobile%'", "results": 5 },
+    { "purpose": "Find Sales-related apps", "query": "SELECT Id, DeveloperName, Label, NavType FROM CustomApplication WHERE DeveloperName LIKE '%Sales%' OR DeveloperName LIKE '%Mobile%' OR DeveloperName LIKE '%Insulet%'", "results": 14 },
+    { "purpose": "Verify SalesCloudMobileUser permissions", "query": "SELECT Id, Name, PermissionsApiEnabled, PermissionsViewAllData FROM PermissionSet WHERE Name = 'SalesCloudMobileUser'", "results": 1 }
+  ],
+  "securityFindings": {
+    "critical": 0,
+    "high": 2,
+    "medium": 2,
+    "low": 1,
+    "actionRequired": ["SEC-001: Health Cloud object audit", "SEC-002: Device security policy"]
+  },
+  "reviewFindings": {
+    "critical": 0,
+    "high": 2,
+    "medium": 3,
+    "low": 2
+  }
+}
