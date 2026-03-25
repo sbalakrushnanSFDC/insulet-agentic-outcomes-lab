@@ -1,0 +1,291 @@
+{
+  "featureId": "NGASIM-76",
+  "runId": "f7e8d9c0-b1a2-3456-cdef-789012345678",
+  "pipelineVersion": "generator-critic-v1",
+  "generatedAt": "2026-03-25T06:52:00.000Z",
+  "contextSources": {
+    "jira": {
+      "featureIssue": "NGASIM-76",
+      "childStories": [
+        "NGPSTE-531",
+        "NGPSTE-532",
+        "NGPSTE-533",
+        "NGPSTE-534",
+        "NGPSTE-535",
+        "NGPSTE-536",
+        "NGPSTE-538",
+        "NGPSTE-708",
+        "NGPSTE-809",
+        "NGPSTE-811",
+        "NGASIM-1523",
+        "NGASIM-1524",
+        "NGASIM-1525",
+        "NGASIM-1526",
+        "NGASIM-1527",
+        "NGASIM-2549"
+      ],
+      "linkedIssues": [
+        "NGPSTE-132",
+        "NGPSTE-51",
+        "NGPSTE-888",
+        "NGCRMI-123",
+        "NGCRMI-2007"
+      ],
+      "tool": "atlassian-guardrails.jira_get_issue / jira_search"
+    },
+    "upstreamRun": {
+      "featureId": "NGPSTE-132",
+      "runId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "artifacts": [
+        "00-intake.md",
+        "01-plan.md",
+        "02-architecture.md",
+        "03-tdd.md",
+        "04-review.md",
+        "05-buildfix.md"
+      ],
+      "adrsReused": [
+        "ADR-001 (ACLightningAdapter reuse)",
+        "ADR-002 (Open CTI vs SCV)",
+        "ADR-003 (Omni-Channel routing via sfdc_phone)",
+        "ADR-004 (Extend existing permission sets)"
+      ]
+    },
+    "devint2": {
+      "queries": [
+        {
+          "soql": "SELECT Id, Name, InternalName FROM CallCenter LIMIT 10",
+          "records": 5,
+          "note": "Confirmed ACLightningAdapter exists"
+        },
+        {
+          "soql": "SELECT Id, DeveloperName, RelatedEntity FROM ServiceChannel WHERE DeveloperName = 'sfdc_phone'",
+          "records": 1,
+          "note": "sfdc_phone ServiceChannel active with VoiceCall entity"
+        },
+        {
+          "soql": "SELECT Id, Name FROM PermissionSet WHERE Name IN ('AC_CallRecording', 'CTI_Integration_Access')",
+          "records": 2,
+          "note": "Both permission sets exist for PSG bundling"
+        },
+        {
+          "soql": "SELECT Id, DeveloperName FROM ServicePresenceStatus LIMIT 10",
+          "records": 0,
+          "note": "No presence statuses configured — gap persists from NGPSTE-132"
+        }
+      ],
+      "tool": "user-Salesforce_DX.run_soql_query"
+    },
+    "cortexMcp": {
+      "available": false,
+      "fallback": "Direct MCP calls used instead"
+    }
+  },
+  "artifactChain": [
+    {
+      "step": "00-intake",
+      "inputs": [
+        "NGASIM-76 Jira data",
+        "16 child stories (expanded scope search)",
+        "5 linked issues",
+        "NGPSTE-132 run artifacts (cross-reference)"
+      ],
+      "outputs": ["00-intake.md"],
+      "agent": "orchestrator",
+      "skillsApplied": ["intake-extraction", "dependency-mapping"],
+      "toolsUsed": [
+        "atlassian-guardrails.jira_get_issue",
+        "atlassian-guardrails.jira_search"
+      ],
+      "rulesApplied": ["salesforce/safety"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "01-plan",
+      "inputs": [
+        "00-intake.md",
+        "NGPSTE-132 ADRs (001-004)",
+        "DevInt2 ServiceChannel, PermissionSet queries"
+      ],
+      "outputs": ["01-plan.md"],
+      "agent": "planner",
+      "skillsApplied": ["plan-formalization", "ac-derivation", "phase-planning"],
+      "toolsUsed": ["user-Salesforce_DX.run_soql_query"],
+      "rulesApplied": ["salesforce/safety", "common-agents"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "02-architecture",
+      "inputs": [
+        "01-plan.md",
+        "NGPSTE-132 02-architecture.md (ADR reuse)",
+        "DevInt2 CallCenter, ServiceChannel data"
+      ],
+      "outputs": ["02-architecture.md"],
+      "agent": "architect",
+      "skillsApplied": [
+        "architecture-design",
+        "adr-authoring",
+        "cti-patterns",
+        "multi-object-resolution"
+      ],
+      "toolsUsed": [
+        "user-Salesforce_DX.run_soql_query"
+      ],
+      "rulesApplied": ["salesforce/safety", "salesforce/apex-standards"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "03-tdd",
+      "inputs": [
+        "01-plan.md (17 ACs)",
+        "02-architecture.md (4 ADRs, object model)"
+      ],
+      "outputs": ["03-tdd.md"],
+      "agent": "tdd-guide",
+      "skillsApplied": ["test-design", "red-green-refactor", "apex-test-patterns"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/apex-standards"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "04-code-review",
+      "inputs": [
+        "00-intake.md",
+        "01-plan.md",
+        "02-architecture.md",
+        "03-tdd.md"
+      ],
+      "outputs": ["04-review.md"],
+      "agent": "code-reviewer",
+      "skillsApplied": ["review-classification", "cross-artifact-consistency"],
+      "toolsUsed": [],
+      "rulesApplied": ["common-agents"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "05-build-fix",
+      "inputs": [
+        "02-architecture.md",
+        "04-review.md"
+      ],
+      "outputs": ["05-buildfix.md"],
+      "agent": "build-error-resolver",
+      "skillsApplied": ["metadata-generation", "finding-resolution"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety"],
+      "confidence": "PARTIALLY_GROUNDED",
+      "note": "Apex classes are pseudo-code — full implementation requires NGPSTE-132 deployment"
+    },
+    {
+      "step": "06-e2e",
+      "inputs": [
+        "03-tdd.md",
+        "05-buildfix.md"
+      ],
+      "outputs": ["06-e2e.md"],
+      "agent": "e2e-runner",
+      "skillsApplied": ["test-execution-planning"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety"],
+      "confidence": "METADATA_UNAVAILABLE",
+      "note": "All tests NOT RUN — NGPSTE-132 deployment and Connect sandbox pending"
+    },
+    {
+      "step": "07-security",
+      "inputs": [
+        "01-plan.md",
+        "02-architecture.md",
+        "05-buildfix.md"
+      ],
+      "outputs": ["07-security.md"],
+      "agent": "security-reviewer",
+      "skillsApplied": [
+        "security-assessment",
+        "crud-fls-verification",
+        "owasp-checklist",
+        "hipaa-compliance",
+        "cti-security"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety", "salesforce/apex-standards", "common-security"],
+      "confidence": "PARTIALLY_GROUNDED",
+      "note": "Named Credential, S3 encryption, and recording opt-out API unverified"
+    },
+    {
+      "step": "08-refactor",
+      "inputs": [
+        "05-buildfix.md",
+        "02-architecture.md"
+      ],
+      "outputs": ["08-refactor.md"],
+      "agent": "refactor-cleaner",
+      "skillsApplied": ["naming-audit", "config-debt-detection"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/apex-standards"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "09-docs",
+      "inputs": ["all prior artifacts"],
+      "outputs": ["09-docs.md"],
+      "agent": "doc-updater",
+      "skillsApplied": ["runbook-generation", "traceability-mapping"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety"],
+      "confidence": "GROUNDED"
+    }
+  ],
+  "criticEvaluation": {
+    "stagesEvaluated": 10,
+    "fullTierStages": [
+      "02-arch-critique",
+      "07-security-critique"
+    ],
+    "standardTierStages": [
+      "01-plan-critique",
+      "03-tdd-critique",
+      "04-review-critique",
+      "05-build-fix-critique",
+      "06-e2e-critique"
+    ],
+    "lightweightStages": [
+      "00-intake",
+      "08-refactor",
+      "09-docs"
+    ],
+    "reRetrievalTriggered": true,
+    "reRetrievalQueries": [
+      "Check Named Credential for Amazon Connect in DevInt2",
+      "Verify Lead phone field index status",
+      "Check PersonAccount phone field accessibility"
+    ],
+    "totalFindings": 12,
+    "findingsBySeverity": {
+      "CRITICAL": 0,
+      "HIGH": 3,
+      "MEDIUM": 5,
+      "LOW": 4
+    }
+  },
+  "securityFindings": {
+    "total": 8,
+    "bySeverity": {
+      "HIGH": 3,
+      "MEDIUM": 3,
+      "LOW": 2
+    },
+    "crudFlsMatrixComplete": true,
+    "owaspChecklistComplete": true,
+    "hipaaAssessmentComplete": true
+  },
+  "reviewFindings": {
+    "total": 11,
+    "bySeverity": {
+      "HIGH": 3,
+      "MEDIUM": 4,
+      "LOW": 2,
+      "INFO": 2
+    }
+  }
+}
