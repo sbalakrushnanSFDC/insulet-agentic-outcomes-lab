@@ -1,0 +1,230 @@
+{
+  "runId": "b3c4d5e6-f7a8-9012-bcde-345678901234",
+  "featureId": "NGASIM-3336",
+  "overallVerdict": "ACCEPT_WITH_CAVEATS",
+  "overallScore": 0.72,
+  "iterationCount": 1,
+  "converged": true,
+  "evaluatedAt": "2026-03-25T21:14:00.000Z",
+  "perStepVerdicts": {
+    "00-intake": {
+      "verdict": "ACCEPT",
+      "score": 0.92,
+      "strengths": [
+        "Thorough cross-cloud detection: SF, MuleSoft, MC, Health Cloud all identified",
+        "API-led layer decomposition clearly mapped across 3 sibling stories",
+        "25 sibling stories under parent feature analyzed for dependency context",
+        "DevInt2 metadata grounded the consent object model assessment"
+      ],
+      "weaknesses": [],
+      "findings": []
+    },
+    "01-plan": {
+      "verdict": "ACCEPT",
+      "score": 0.88,
+      "strengths": [
+        "15 derived ACs cover happy path, error handling, security, and performance",
+        "All 10 mandatory lenses populated with specific, non-generic content",
+        "10 anti-pattern gates evaluated — MuleSoft layering and consent SOT explicitly justified",
+        "Cross-cloud implications identified for MuleSoft, MC, and Data Cloud future"
+      ],
+      "weaknesses": [
+        "No explicit AC for MC → SF double opt-in confirmation callback (return path)",
+        "Effort estimate (21 story points) may underestimate MC API integration complexity"
+      ],
+      "findings": [
+        {
+          "id": "PLAN-001",
+          "severity": "MEDIUM",
+          "message": "Missing AC for double opt-in confirmation return path from MC to SF",
+          "recommendation": "Add AC-16: MC sends confirmation callback to MuleSoft sys-api → prc-api → exp-api → SF platform event to update ConsentStatus to 'Opt In'"
+        }
+      ]
+    },
+    "02-architecture": {
+      "verdict": "ACCEPT",
+      "score": 0.85,
+      "strengths": [
+        "4 ADRs with clear context, decision, consequences, and rejected alternatives",
+        "Expert Context block generated with platform fit, tradeoffs, anti-patterns, re-architecture triggers",
+        "CTA domain coverage matrix shows 8/9 domains addressed",
+        "RAML contract specification with DataWeave transformation map",
+        "Sequence diagrams cover happy path, error/DLQ path, and circuit breaker scenarios"
+      ],
+      "weaknesses": [
+        "Security architecture references mTLS but does not specify certificate management approach",
+        "Scale analysis identifies MC API rate limit as bottleneck but doesn't quantify current consent volume"
+      ],
+      "findings": [
+        {
+          "id": "ARCH-001",
+          "severity": "MEDIUM",
+          "message": "mTLS certificate management approach not specified",
+          "recommendation": "Add certificate lifecycle management using Anypoint Platform trust store or external PKI"
+        },
+        {
+          "id": "ARCH-002",
+          "severity": "LOW",
+          "message": "Consent volume estimate needed for capacity planning",
+          "recommendation": "Query DevInt2 for ContactPointTypeConsent record count over last 30 days to baseline volume"
+        }
+      ]
+    },
+    "03-tdd": {
+      "verdict": "ACCEPT",
+      "score": 0.90,
+      "strengths": [
+        "28 test cases covering all 15 ACs with clear Given/When/Then structure",
+        "Test case naming convention follows TC_Output_RTM format",
+        "DataWeave transformation tests include edge cases (null phone, international format)",
+        "RTM maps every AC to at least 2 test cases",
+        "Test data factory pattern with configurable consent states"
+      ],
+      "weaknesses": [
+        "No chaos/fault injection test for MuleSoft runtime failures"
+      ],
+      "findings": []
+    },
+    "04-code-review": {
+      "verdict": "ACCEPT",
+      "score": 0.82,
+      "strengths": [
+        "12 findings properly categorized with actionable remediation",
+        "Anti-pattern analysis evaluated all 10 gates",
+        "Cross-cloud contract coupling identified as key risk"
+      ],
+      "weaknesses": [],
+      "findings": []
+    },
+    "05-build-fix": {
+      "verdict": "ACCEPT_WITH_CAVEATS",
+      "score": 0.65,
+      "strengths": [
+        "RAML spec, DataWeave modules, and MuleSoft flow XML documented",
+        "All 12 review findings addressed with resolution steps"
+      ],
+      "weaknesses": [
+        "Implementation is pseudo-code — cannot verify compilation or unit test execution",
+        "Anypoint Platform credentials not available for CloudHub deployment"
+      ],
+      "findings": [
+        {
+          "id": "BUILD-001",
+          "severity": "HIGH",
+          "message": "Full build requires Anypoint Studio with CloudHub credentials",
+          "recommendation": "Provision Anypoint Platform sandbox for development team; run mvn clean test locally"
+        }
+      ]
+    },
+    "06-e2e": {
+      "verdict": "ACCEPT_WITH_CAVEATS",
+      "score": 0.45,
+      "strengths": [
+        "14 E2E scenarios well-structured with clear entry/exit criteria",
+        "RTM maps all ACs to test cases with honest status reporting (47% BLOCKED)",
+        "Blocker chain correctly identifies NGASIM-3058 as the critical path dependency"
+      ],
+      "weaknesses": [
+        "Zero tests executed — all blocked by upstream dependencies",
+        "MC sandbox not provisioned — cannot validate MC API integration even with mocks"
+      ],
+      "findings": [
+        {
+          "id": "E2E-001",
+          "severity": "HIGH",
+          "message": "No E2E test execution possible — 4 blockers (NGASIM-3058, -3335, -3143, MC sandbox)",
+          "recommendation": "Track blockers in sprint board; target E2E execution in Sprint N+1 after NGASIM-3058 reaches Done"
+        }
+      ]
+    },
+    "07-security": {
+      "verdict": "ACCEPT_WITH_CAVEATS",
+      "score": 0.58,
+      "strengths": [
+        "Comprehensive STRIDE threat model with 16 identified threats",
+        "OWASP API Security Top 10 fully mapped to MuleSoft context",
+        "PII/PHI analysis correctly identifies HIPAA-adjacent classification for medical device consent data",
+        "Cross-cloud trust boundary analysis covers SF → MuleSoft → MC boundaries",
+        "Consent compliance section covers TCPA, CAN-SPAM, GDPR"
+      ],
+      "weaknesses": [
+        "2 CRITICAL findings remain unmitigated: PII in logs, credentials in properties",
+        "mTLS not configured — recommended but not enforced",
+        "No penetration test planned for MuleSoft exp-api endpoints"
+      ],
+      "findings": [
+        {
+          "id": "SEC-001",
+          "severity": "CRITICAL",
+          "message": "PII (phone numbers) logged in clear text in MuleSoft flow logs and DLQ messages",
+          "recommendation": "Implement DataWeave PII masker for all log statements; encrypt DLQ message payloads"
+        },
+        {
+          "id": "SEC-002",
+          "severity": "CRITICAL",
+          "message": "MC API OAuth2 credentials stored as application properties instead of secure vault",
+          "recommendation": "Migrate to Anypoint Secure Properties or HashiCorp Vault before any non-sandbox deployment"
+        },
+        {
+          "id": "SEC-003",
+          "severity": "HIGH",
+          "message": "Consent state machine not enforced — out-of-order events could corrupt consent status",
+          "recommendation": "Add state transition validation in DataWeave before routing to prc-api"
+        }
+      ]
+    },
+    "08-refactor": {
+      "verdict": "ACCEPT",
+      "score": 0.78,
+      "strengths": [
+        "Design quality rated 7.4/10 with justified scoring",
+        "All 10 anti-pattern gates evaluated with evidence",
+        "Reusability analysis identifies 4 future consent types that can reuse exp-api pattern"
+      ],
+      "weaknesses": [],
+      "findings": []
+    },
+    "09-docs": {
+      "verdict": "ACCEPT",
+      "score": 0.85,
+      "strengths": [
+        "Operational runbook covers deployment, monitoring, 7 failure modes, rollback",
+        "Traceability map chains stories → ACs → ADRs → tests → findings → debt",
+        "Cross-cloud integration guide with credential rotation procedures",
+        "CTA 9-domain coverage summary with recommended follow-ups"
+      ],
+      "weaknesses": [],
+      "findings": []
+    }
+  },
+  "aggregateMetrics": {
+    "averageScore": 0.768,
+    "stagesAboveThreshold": 7,
+    "stagesBelowThreshold": 3,
+    "totalFindings": 7,
+    "criticalFindings": 2,
+    "highFindings": 3,
+    "mediumFindings": 1,
+    "lowFindings": 1,
+    "expertCalibrationDepth": 0.82,
+    "crossCloudCoverage": 0.85,
+    "antiPatternCompliance": 0.88,
+    "mandatoryLensCompleteness": 1.0,
+    "promotionGuidance": {
+      "verdict": "PROMOTE_WITH_CONDITIONS",
+      "conditions": [
+        "Resolve 2 CRITICAL security findings (PII logging, credential storage) before any non-sandbox deployment",
+        "Complete NGASIM-3058 → enable integration testing → re-run E2E stage",
+        "Validate MC Classic REST API approach with MC admin team per ADR-004",
+        "Add AC-16 for double opt-in confirmation return path",
+        "Schedule security penetration test for MuleSoft exp-api before production"
+      ],
+      "expertComplete": false,
+      "expertGaps": [
+        "mTLS certificate management not specified",
+        "MC sandbox not provisioned for validation",
+        "Consent volume baseline not established from DevInt2 data"
+      ]
+    }
+  }
+}

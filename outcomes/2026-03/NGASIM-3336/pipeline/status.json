@@ -1,0 +1,150 @@
+{
+  "featureId": "NGASIM-3336",
+  "runId": "b3c4d5e6-f7a8-9012-bcde-345678901234",
+  "runVersion": 1,
+  "overallStatus": "pass_with_caveats",
+  "pipelineMode": "generator-critic",
+  "startedAt": "2026-03-25T20:58:00.000Z",
+  "completedAt": "2026-03-25T21:15:00.000Z",
+  "steps": {
+    "00-intake": {
+      "status": "pass",
+      "agent": "orchestrator",
+      "artifact": "00-intake.md"
+    },
+    "01-plan": {
+      "status": "pass",
+      "agent": "planner",
+      "artifact": "01-plan.md"
+    },
+    "02-architecture": {
+      "status": "pass",
+      "agent": "architect",
+      "artifact": "02-architecture.md"
+    },
+    "03-tdd": {
+      "status": "pass",
+      "agent": "tdd-guide",
+      "artifact": "03-tdd.md"
+    },
+    "04-code-review": {
+      "status": "pass",
+      "agent": "code-reviewer",
+      "artifact": "04-review.md"
+    },
+    "05-build-fix": {
+      "status": "pass_with_caveats",
+      "agent": "build-error-resolver",
+      "artifact": "05-buildfix.md",
+      "caveat": "MuleSoft exp-api pseudo-code — full Anypoint Studio project build requires CloudHub credentials and Anypoint Platform access"
+    },
+    "06-e2e": {
+      "status": "pass_with_caveats",
+      "agent": "e2e-runner",
+      "artifact": "06-e2e.md",
+      "caveat": "E2E tests NOT RUN — blocked by NGASIM-3058 (SF trigger), NGASIM-3335 (prc-api), NGASIM-3143 (sys-api), and MC sandbox provisioning"
+    },
+    "07-security": {
+      "status": "pass_with_caveats",
+      "agent": "security-reviewer",
+      "artifact": "07-security.md",
+      "caveat": "2 CRITICAL security findings: PII exposure in MuleSoft logs/DLQ, MC API credentials not in secure vault; 3 HIGH: consent state machine, replay ID gap, mTLS not configured"
+    },
+    "08-refactor": {
+      "status": "pass",
+      "agent": "refactor-cleaner",
+      "artifact": "08-refactor.md"
+    },
+    "09-docs": {
+      "status": "pass",
+      "agent": "doc-updater",
+      "artifact": "09-docs.md"
+    }
+  },
+  "criticVerdict": {
+    "overallVerdict": "ACCEPT_WITH_CAVEATS",
+    "overallScore": 0.72,
+    "iterationCount": 1,
+    "converged": true,
+    "stepsRequiringAttention": [
+      "05-build-fix",
+      "06-e2e",
+      "07-security"
+    ]
+  },
+  "caveats": [
+    "NGASIM-3058 (SF Apex trigger for consent platform event) is in QA — blocks live integration testing",
+    "Sibling MuleSoft stories (NGASIM-3335 prc-api, NGASIM-3143 sys-api) are both To Do — full API-led chain untestable",
+    "Marketing Cloud sandbox access not yet provisioned for integration testing",
+    "2 CRITICAL security findings: PII (phone numbers) logged in clear text in MuleSoft flows and DLQ messages; MC API OAuth2 credentials stored as application properties instead of Anypoint Secure Properties or Vault",
+    "3 HIGH security findings: Consent state machine validation missing (out-of-order events possible), platform event replay ID tracking not implemented (event gap detection), mTLS not configured between MuleSoft and MC API",
+    "No story covers MC → SF confirmation callback for double opt-in completion — critical scope gap for Product Owner",
+    "MuleSoft exp-api is pseudo-code — full Anypoint Studio project build requires CloudHub deployment",
+    "MC Classic REST API chosen over MC Connect (et4ae5) — documented in ADR-004 but requires validation with MC admin team"
+  ],
+  "crossCloudDetection": {
+    "salesforce": {
+      "detected": true,
+      "signals": ["ContactPointTypeConsent", "Platform Events", "Apex trigger (NGASIM-3058)", "Named Credentials"],
+      "implicationsNoted": true
+    },
+    "mulesoft": {
+      "detected": true,
+      "signals": ["API-Led Connectivity (exp/prc/sys)", "DataWeave transformations", "CloudHub deployment", "ObjectStore for idempotency"],
+      "implicationsNoted": true
+    },
+    "marketingCloud": {
+      "detected": true,
+      "signals": ["MC Classic REST API for SMS", "Double opt-in trigger", "et4ae5__SMSDefinition__c exists", "OAuth2 client credentials"],
+      "implicationsNoted": true
+    },
+    "dataCloud": {
+      "detected": false,
+      "signals": ["Consent data may flow to Data Cloud in future — flagged as re-architecture trigger"],
+      "implicationsNoted": true
+    },
+    "healthCloud": {
+      "detected": true,
+      "signals": ["Medical device patient context (Omnipod)", "HIPAA-adjacent PII handling", "ContactPointTypeConsent is Health Cloud standard object"],
+      "implicationsNoted": true
+    },
+    "experienceCloud": {
+      "detected": false,
+      "signals": [],
+      "implicationsNoted": false
+    }
+  },
+  "antiPatternGates": {
+    "no-generic-platform": "PASS",
+    "ootb-before-custom": "PASS",
+    "no-async-handwave": "PASS",
+    "data-duplication-sot": "PASS",
+    "mulesoft-layering-justified": "PASS",
+    "data-cloud-pattern-justified": "N/A",
+    "marketing-cloud-freshness": "EVALUATE",
+    "consent-identity-crosscloud": "EVALUATE",
+    "operational-observability": "EVALUATE",
+    "rejected-alternatives-stated": "PASS"
+  },
+  "ctaDomainCoverage": {
+    "businessArchitecture": "addressed",
+    "solutionArchitecture": "addressed",
+    "platformArchitecture": "addressed",
+    "securityIdentity": "addressed",
+    "coreData": "addressed",
+    "integrationMuleSoft": "addressed",
+    "applicationUxAutomation": "not-applicable",
+    "deliveryTestingAlm": "addressed",
+    "crossCloudActivation": "addressed"
+  },
+  "generatorStages": 10,
+  "criticStages": 7,
+  "lightweightStages": 3,
+  "artifactCount": 10,
+  "totalArtifactLines": 5981,
+  "criticFindingsCount": 15,
+  "criticalSeverityCount": 2,
+  "highSeverityCount": 3,
+  "mediumSeverityCount": 5,
+  "lowSeverityCount": 5
+}

@@ -1,0 +1,281 @@
+{
+  "featureId": "NGASIM-3336",
+  "runId": "b3c4d5e6-f7a8-9012-bcde-345678901234",
+  "pipelineVersion": "generator-critic-v1",
+  "generatedAt": "2026-03-25T21:15:00.000Z",
+  "contextSources": {
+    "jira": {
+      "featureIssue": "NGASIM-3336",
+      "parentFeature": "NGASIM-28",
+      "siblingStories": [
+        "NGASIM-3143",
+        "NGASIM-3335",
+        "NGASIM-3058"
+      ],
+      "childStoriesUnderParent": 25,
+      "linkedIssues": [
+        "NGASIM-3143"
+      ],
+      "tool": "atlassian-guardrails.jira_get_issue / jira_search"
+    },
+    "devint2": {
+      "queries": [
+        {
+          "soql": "SELECT QualifiedApiName, DeveloperName FROM EntityDefinition WHERE QualifiedApiName LIKE '%Consent%' LIMIT 20",
+          "records": 20,
+          "note": "Confirmed ContactPointTypeConsent, ContactPointConsent, CommSubscriptionConsent, AuthorizationFormConsent, PrivacyConsent and history/change-event variants exist",
+          "api": "tooling"
+        },
+        {
+          "soql": "SELECT QualifiedApiName FROM EntityDefinition WHERE QualifiedApiName LIKE '%ContactPointType%' LIMIT 10",
+          "records": 5,
+          "note": "ContactPointTypeConsent + Share, OwnerSharingRule, History, ChangeEvent all active"
+        },
+        {
+          "soql": "SELECT QualifiedApiName FROM EntityDefinition WHERE QualifiedApiName LIKE '%Event%' AND QualifiedApiName LIKE '%SMS%' LIMIT 10",
+          "records": 2,
+          "note": "et4ae5__SMSDefinition__ChangeEvent and et4ae5__SMSJunction__ChangeEvent found — MC Connect managed package active"
+        },
+        {
+          "soql": "SELECT DeveloperName, NamespacePrefix FROM PlatformEventChannelMember LIMIT 10",
+          "records": 10,
+          "note": "OrgSync_Consent_Staging platform event channel member confirmed. Also Patient, Physician, Training, ASPN, Account, HCP_Login channels"
+        }
+      ],
+      "tool": "user-Salesforce_DX.run_soql_query"
+    },
+    "cortexMcp": {
+      "available": false,
+      "fallback": "Direct MCP calls to atlassian-guardrails and Salesforce DX used"
+    }
+  },
+  "artifactChain": [
+    {
+      "step": "00-intake",
+      "inputs": [
+        "NGASIM-3336 Jira issue data",
+        "NGASIM-28 parent feature data",
+        "NGASIM-3143, NGASIM-3335, NGASIM-3058 sibling story data",
+        "25 child stories under NGASIM-28 (status breakdown)",
+        "DevInt2 consent entity metadata"
+      ],
+      "outputs": ["00-intake.md"],
+      "agent": "orchestrator",
+      "skillsApplied": ["intake-extraction", "dependency-mapping", "cross-cloud-detection"],
+      "toolsUsed": [
+        "atlassian-guardrails.jira_get_issue",
+        "atlassian-guardrails.jira_search",
+        "user-Salesforce_DX.run_soql_query"
+      ],
+      "rulesApplied": ["salesforce/safety", "cta-caliber/cross-cloud"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "01-plan",
+      "inputs": [
+        "00-intake.md",
+        "NGASIM-28 feature description (consent lifecycle)",
+        "NGASIM-3058 (SF trigger — blocking dependency)",
+        "DevInt2 ContactPointTypeConsent entity"
+      ],
+      "outputs": ["01-plan.md"],
+      "agent": "planner",
+      "skillsApplied": ["plan-formalization", "ac-derivation", "phase-planning", "mandatory-lens-coverage"],
+      "toolsUsed": ["user-Salesforce_DX.run_soql_query"],
+      "rulesApplied": ["salesforce/safety", "cta-caliber/10-lenses", "cta-caliber/anti-patterns"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "02-architecture",
+      "inputs": [
+        "01-plan.md (15 ACs)",
+        "DevInt2 consent and platform event metadata",
+        "MuleSoft API-led connectivity pattern",
+        "MC Classic REST API documentation"
+      ],
+      "outputs": ["02-architecture.md"],
+      "agent": "architect",
+      "skillsApplied": [
+        "architecture-design",
+        "adr-authoring",
+        "mulesoft-api-led-patterns",
+        "cross-cloud-integration",
+        "expert-context-generation"
+      ],
+      "toolsUsed": ["user-Salesforce_DX.run_soql_query"],
+      "rulesApplied": ["salesforce/safety", "cta-caliber/expert-context", "cta-caliber/9-domains"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "03-tdd",
+      "inputs": [
+        "01-plan.md (15 ACs)",
+        "02-architecture.md (4 ADRs, RAML spec, DataWeave mappings)"
+      ],
+      "outputs": ["03-tdd.md"],
+      "agent": "tdd-guide",
+      "skillsApplied": ["test-design", "red-green-refactor", "mulesoft-test-patterns", "rtm-generation"],
+      "toolsUsed": [],
+      "rulesApplied": ["cta-caliber/testing-depth"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "04-code-review",
+      "inputs": [
+        "00-intake.md",
+        "01-plan.md",
+        "02-architecture.md",
+        "03-tdd.md"
+      ],
+      "outputs": ["04-review.md"],
+      "agent": "code-reviewer",
+      "skillsApplied": ["review-classification", "cross-artifact-consistency", "anti-pattern-detection", "platform-fit-assessment"],
+      "toolsUsed": [],
+      "rulesApplied": ["cta-caliber/anti-patterns", "cta-caliber/cross-cloud"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "05-build-fix",
+      "inputs": [
+        "02-architecture.md (RAML spec, DataWeave mappings)",
+        "04-review.md (12 findings)"
+      ],
+      "outputs": ["05-buildfix.md"],
+      "agent": "build-error-resolver",
+      "skillsApplied": ["mulesoft-project-structure", "raml-validation", "finding-resolution"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety"],
+      "confidence": "PARTIALLY_GROUNDED",
+      "note": "MuleSoft exp-api is pseudo-code — full Anypoint Studio build requires CloudHub credentials"
+    },
+    {
+      "step": "06-e2e",
+      "inputs": [
+        "03-tdd.md (28 test cases)",
+        "05-buildfix.md (pseudo-code implementation)"
+      ],
+      "outputs": ["06-e2e.md"],
+      "agent": "e2e-runner",
+      "skillsApplied": ["test-execution-planning", "rtm-generation", "blocker-analysis"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety", "cta-caliber/testing-depth"],
+      "confidence": "METADATA_UNAVAILABLE",
+      "note": "All E2E tests NOT RUN — blocked by NGASIM-3058, NGASIM-3335, NGASIM-3143, MC sandbox"
+    },
+    {
+      "step": "07-security",
+      "inputs": [
+        "01-plan.md",
+        "02-architecture.md",
+        "04-review.md",
+        "05-buildfix.md"
+      ],
+      "outputs": ["07-security.md"],
+      "agent": "security-reviewer",
+      "skillsApplied": [
+        "security-assessment",
+        "stride-threat-model",
+        "owasp-api-top10",
+        "hipaa-compliance",
+        "pii-phi-analysis",
+        "cross-cloud-trust-posture"
+      ],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety", "cta-caliber/security-identity", "common-security"],
+      "confidence": "PARTIALLY_GROUNDED",
+      "note": "mTLS configuration, Anypoint Vault, and MC API IP allowlisting unverified against live infrastructure"
+    },
+    {
+      "step": "08-refactor",
+      "inputs": [
+        "05-buildfix.md",
+        "02-architecture.md",
+        "04-review.md"
+      ],
+      "outputs": ["08-refactor.md"],
+      "agent": "refactor-cleaner",
+      "skillsApplied": ["naming-audit", "config-debt-detection", "anti-pattern-gate-evaluation", "reusability-analysis"],
+      "toolsUsed": [],
+      "rulesApplied": ["cta-caliber/anti-patterns"],
+      "confidence": "GROUNDED"
+    },
+    {
+      "step": "09-docs",
+      "inputs": ["all prior artifacts"],
+      "outputs": ["09-docs.md"],
+      "agent": "doc-updater",
+      "skillsApplied": ["runbook-generation", "traceability-mapping", "cross-cloud-integration-guide"],
+      "toolsUsed": [],
+      "rulesApplied": ["salesforce/safety", "cta-caliber/9-domains"],
+      "confidence": "GROUNDED"
+    }
+  ],
+  "criticEvaluation": {
+    "stagesEvaluated": 10,
+    "fullTierStages": [
+      "02-arch-critique",
+      "07-security-critique"
+    ],
+    "standardTierStages": [
+      "01-plan-critique",
+      "03-tdd-critique",
+      "04-review-critique",
+      "05-build-fix-critique",
+      "06-e2e-critique"
+    ],
+    "lightweightStages": [
+      "00-intake",
+      "08-refactor",
+      "09-docs"
+    ],
+    "reRetrievalTriggered": true,
+    "reRetrievalQueries": [
+      "Verify ContactPointTypeConsent field-level security in DevInt2",
+      "Check for existing MuleSoft Connected Apps in DevInt2",
+      "Confirm MC Classic REST API endpoint availability",
+      "Verify platform event publish limits for consent volume"
+    ],
+    "totalFindings": 15,
+    "findingsBySeverity": {
+      "CRITICAL": 2,
+      "HIGH": 3,
+      "MEDIUM": 5,
+      "LOW": 5
+    }
+  },
+  "securityFindings": {
+    "total": 15,
+    "bySeverity": {
+      "CRITICAL": 2,
+      "HIGH": 3,
+      "MEDIUM": 5,
+      "LOW": 3,
+      "INFO": 2
+    },
+    "strideModelComplete": true,
+    "owaspApiTop10Complete": true,
+    "hipaaAssessmentComplete": true,
+    "piiPhiAnalysisComplete": true,
+    "crossCloudTrustPostureComplete": true
+  },
+  "reviewFindings": {
+    "total": 12,
+    "bySeverity": {
+      "HIGH": 3,
+      "MEDIUM": 4,
+      "LOW": 3,
+      "INFO": 2
+    }
+  },
+  "ctaCalibration": {
+    "domainsAddressed": 8,
+    "domainsNotApplicable": 1,
+    "domainsGap": 0,
+    "mandatoryLensesCovered": 10,
+    "antiPatternGatesPassed": 7,
+    "antiPatternGatesEvaluating": 3,
+    "antiPatternGatesFailed": 0,
+    "expertContextBlocksGenerated": 4,
+    "crossCloudsDetected": ["salesforce", "mulesoft", "marketing-cloud", "health-cloud"]
+  }
+}
